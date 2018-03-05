@@ -1,8 +1,6 @@
+const connection = require('../models/models');
 const express = require('express');
 const router = express.Router();
-
-// Testing
-let database = {};
 
 // Middleware to log all HTTP requests
 router.use(function(req, res, next) {
@@ -23,22 +21,30 @@ router.route('/api')
     const to = req.query.to;
 
     // Enter info into database
-    database[from] = to;
-    res.end("Link successfully created! customl.ink/" + from + " now links to " + to);
+    connection.query(`INSERT INTO links (sourceLink, targetUrl) VALUES ('${from}', '${to}')`, function (error, results, fields) {
+      if (error) throw error;
+      res.end(`Link successfully created! customl.ink/${from} now links to ${to}`);
+    });
   })
   .put((req, res) => {
-    const from = req.query.from;
-    const to = req.query.to;
+    const sourceLink = req.query.from;
+    const targetUrl = req.query.to;
 
     // Enter info into database
-    database[from] = to;
-    res.end("Link successfully updated! customl.ink/" + from + " now links to " + to);
+    connection.query(`UPDATE links SET targetUrl = '${targetUrl}' WHERE sourceLink = '${sourceLink}'`, function (error, results, fields) {
+      if (error) throw error;
+      res.end(`Link successfully updated! customl.ink/${sourceLink} now links to ${targetUrl}`);
+    });
   });
 
 // Accessing a custom link
 router.route('/:from')
   .get((req, res) => {
-    res.redirect(database[req.params.from]);
+    // Enter info into database
+    connection.query(`SELECT targetUrl FROM links WHERE sourceLink = '${req.params.from}'`, function (error, results, fields) {
+      if (error) throw error;
+      res.redirect(results[0].targetUrl);
+    });
   });
 
 module.exports = router;
