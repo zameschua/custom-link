@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "node index.js"
+    "client": "cd client && yarn start",
+    "server": "nodemon index.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "author": "zameschua",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
     "mysql": "^2.15.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1"
   }
 }

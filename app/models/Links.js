@@ -4,8 +4,8 @@ const mysql = require('mysql2/promise');
 console.log("Connecting to mySQL database...");
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "herochua",
-  password: "9517503a",
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
   database: "custom-link"
 }).then(connection => {
   console.log("Connected to mySQL database!");
