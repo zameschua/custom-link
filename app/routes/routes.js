@@ -21,7 +21,7 @@ router.route('/api')
     const targetUrl = req.query.targetUrl;
     const command = `
       INSERT INTO links (sourceLink, targetUrl)
-      VALUES (sourceLink, targetUrl)
+      VALUES ('${sourceLink}', '${targetUrl}')
       `
     // Enter info into database
     connection.query(command, function (error, results, fields) {
@@ -37,10 +37,11 @@ router.route('/:sourceLink')
     const command = `
       SELECT targetUrl
       FROM links
-      WHERE sourceLink = '${req.params.from}'
+      WHERE sourceLink = '${req.params.sourceLink}'
       `
     connection.query(command, function (error, results, fields) {
       if (error) throw error;
+      console.log(results);
       res.redirect(results[0].targetUrl);
     });
   })

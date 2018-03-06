@@ -9,5 +9,5 @@ app.use('/', routes);
 const PORT = process.env.port || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Running on port ${PORT}`
-)});
+  console.log(`Running on port ${PORT}`)
+});

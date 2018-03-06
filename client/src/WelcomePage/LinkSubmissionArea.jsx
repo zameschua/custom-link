@@ -10,6 +10,42 @@ import {
 } from 'reactstrap';
 
 class LinkSubmissionArea extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sourceLink: "",
+      targetUrl: "",
+    }
+    this.handleSourceLinkChange = this.handleSourceLinkChange.bind(this);
+    this.handleTargetUrlChange = this.handleTargetUrlChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSourceLinkChange(event) {
+    this.setState({
+      sourceLink: event.target.value,
+    })
+  }
+
+  handleTargetUrlChange(event) {
+    this.setState({
+      targetUrl: event.target.value,
+    })
+  }
+
+  handleSubmit() {
+    const url = `/api/?sourceLink=${this.state.sourceLink}&targetUrl=${this.state.targetUrl}`;
+    fetch(url, {method: 'POST'})
+      .then(data => console.log(data))
+      .catch(error => console.error(error))
+
+    // Clear the input fields
+    this.setState({
+      sourceLink: "",
+      targetUrl: "",
+    })
+  }
+
   render() {
     return (
       <Container>
@@ -20,18 +56,27 @@ class LinkSubmissionArea extends Component {
         }}>
           <Col md="6">
             <InputGroup>
-              <Input placeholder="Long URL here" />
+              <Input placeholder="Long URL here"
+                value={this.state.targetUrl}
+                onChange={this.handleTargetUrlChange}
+              />
             </InputGroup>
           </Col>
           <Col md="6">
             <InputGroup>
               <InputGroupAddon addonType="prepend">customl.ink/</InputGroupAddon>
-              <Input placeholder="your custom link here" />
+              <Input placeholder="your custom link here"
+                value={this.state.sourceLink}
+                onChange={this.handleSourceLinkChange}
+              />
             </InputGroup>
           </Col>
         </Row>
         <br />
-        <Button size="lg" style={{
+        <Button
+          size="lg"
+          onClick={this.handleSubmit}
+          style={{
           borderRadius: "50px",
           backgroundColor: "white",
           border: "none",
