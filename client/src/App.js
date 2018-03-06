@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Button } from 'reactstrap';
-
-import NavBar from './Welcome/NavBar';
+import WelcomePage from './WelcomePage/WelcomePage';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <NavBar />
+      <div className="App"
+        style={{height: "100vh"}}>
+        <WelcomePage />
       </div>
     );
   }

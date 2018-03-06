@@ -8,10 +8,7 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+} from 'reactstrap';
 
 export default class NavBar extends React.Component {
   constructor(props) {
@@ -30,16 +27,16 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar color="faded" light expand="md">
+        <Navbar light expand="md" style={{backgroundColor: "#F9BF3B"}}>
           <NavbarBrand href="/">CustomL.ink</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/api">Api</NavLink>
+                <NavLink href="/api" style={{color: "white"}}>Api</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://github.com/zameschua/custom-link">Github</NavLink>
+                <NavLink href="https://github.com/zameschua/custom-link" style={{color: "white"}}>Github</NavLink>
               </NavItem>
             </Nav>
           </Collapse>

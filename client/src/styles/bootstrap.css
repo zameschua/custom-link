@@ -6135,13 +6135,13 @@ button.close {
 }
 
 .bg-primary {
-  background-color: #4582EC !important;
+  background-color: white !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
 button.bg-primary:focus {
-  background-color: #1863e6 !important;
+  background-color: white !important;
 }
 
 .bg-secondary {
