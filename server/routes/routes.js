@@ -1,6 +1,14 @@
-const connection = require('../models/models');
 const express = require('express');
 const router = express.Router();
+const path = require("path");
+
+// Connect to Postgres
+const { Client } = require('pg');
+const postgres = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+postgres.connect();
 
 // Middleware to log all HTTP requests
 router.use(function(req, res, next) {
@@ -11,7 +19,7 @@ router.use(function(req, res, next) {
 // App
 router.route('/')
   .get((req, res) => {
-    res.send('Redirect to the view page later\n');
+    res.sendFile(path.join(__dirname + '/../../client/build/index.html'));
   });
 
 // Creating a new link
@@ -24,9 +32,10 @@ router.route('/api')
       VALUES ('${sourceLink}', '${targetUrl}')
       `
     // Enter info into database
-    connection.query(command, function (error, results, fields) {
+    postgres.query(command, function (error, results, fields) {
       if (error) throw error;
       res.end(`Link successfully created! customl.ink/${sourceLink} now links to ${targetUrl}`);
+      postgres.end(); // Close connection to save my heroku credits
     });
   })
 
@@ -39,10 +48,11 @@ router.route('/:sourceLink')
       FROM links
       WHERE sourceLink = '${req.params.sourceLink}'
       `
-    connection.query(command, function (error, results, fields) {
+    postgres.query(command, function (error, results, fields) {
       if (error) throw error;
       console.log(results);
       res.redirect(results[0].targetUrl);
+      postgres.end(); // Close connection to save my heroku credits
     });
   })
   /*
@@ -55,7 +65,7 @@ router.route('/:sourceLink')
       WHERE sourceLink = '${sourceLink}'
     `
     // Enter info into database
-    connection.query(command, function (error, results, fields) {
+    postgres.query(command, function (error, results, fields) {
       if (error) throw error;
       res.end(`Link successfully updated! customl.ink/${sourceLink} now links to ${targetUrl}`);
     });

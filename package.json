@@ -7,13 +7,16 @@
     "test": "test",
     "client": "cd client && yarn start",
     "server": "nodemon index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "heroku-postbuild": "yarn && cd client && yarn && yarn build",
+    "start": "yarn heroku-postbuild && cd client && yarn start && cd .. & nodemon index.js"
   },
   "author": "zameschua",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^5.0.1",
     "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "pg": "^7.4.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.1"

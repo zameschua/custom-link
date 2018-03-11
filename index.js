@@ -2,7 +2,9 @@
 
 const express = require('express');
 const app = express();
-const routes = require('./app/routes/routes');
+const routes = require('./server/routes/routes');
+require('dotenv').load(); // For environment variables
+
 app.use('/', routes);
 
 // Constants
