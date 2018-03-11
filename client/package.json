@@ -15,5 +15,5 @@
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:5000/",
-  "homepage": "http://www.customl.ink/
+  "homepage": "http://www.customl.ink/"
 }
