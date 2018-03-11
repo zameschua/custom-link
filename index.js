@@ -1,11 +1,8 @@
 'use strict';
 
 const express = require('express');
-const app = express();
-const routes = require('./server/routes/routes');
+const app = require('./server/routes/routes')
 require('dotenv').load(); // For environment variables
-
-app.use('/', routes);
 
 // Constants
 const PORT = process.env.PORT || 5000;

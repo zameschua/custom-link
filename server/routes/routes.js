@@ -1,29 +1,26 @@
 const express = require('express');
+const app = express();
 const router = express.Router();
 const path = require("path");
 
 // Connect to Postgres
 const { Client } = require('pg');
 const postgres = new Client({
-  database : 'custom_link',
+  //database : 'custom_link',
   connectionString: process.env.DATABASE_URL,
   ssl: true,
 });
 postgres.connect();
 
 // Middleware to log all HTTP requests
-router.use(function(req, res, next) {
+app.use(function(req, res, next) {
   console.log('%s %s', req.method, req.url);
   next();
 });
-
-// App
-router.use(express.static(path.join(__dirname, '/../../client/build')));
-router.route('/')
-  .get((req, res) => {
-    res.sendFile(path.join(__dirname + '/../../client/build/index.html'));
-
-  });
+// Main website
+app.use(express.static(path.join(__dirname, '/../../client/build')));
+// Pass to API routing
+app.use('/', router);
 
 // Creating a new link
 router.route('/api')
@@ -31,14 +28,13 @@ router.route('/api')
     const sourceLink = req.query.sourceLink;
     const targetUrl = req.query.targetUrl;
     const command = `
-      INSERT INTO links (sourceLink, targetUrl)
+      INSERT INTO links (source_link, target_url)
       VALUES ('${sourceLink}', '${targetUrl}')
       `
     // Enter info into database
     postgres.query(command, function (error, results, fields) {
       if (error) throw error;
       res.end(`Link successfully created! customl.ink/${sourceLink} now links to ${targetUrl}`);
-      postgres.end(); // Close connection to save my heroku credits
     });
   })
 
@@ -47,15 +43,15 @@ router.route('/:sourceLink')
   .get((req, res) => {
     // Enter info into database
     const command = `
-      SELECT targetUrl
+      SELECT target_url
       FROM links
-      WHERE sourceLink = '${req.params.sourceLink}'
+      WHERE source_link = '${req.params.sourceLink}'
       `
     postgres.query(command, function (error, results, fields) {
       if (error) throw error;
-      console.log(results);
-      res.redirect(results[0].targetUrl);
-      postgres.end(); // Close connection to save my heroku credits
+      //console.log(results);
+      console.log(req.params);
+      res.redirect(results.rows[0].target_url);
     });
   })
   /*
@@ -74,4 +70,5 @@ router.route('/:sourceLink')
     });
   });
 */
-module.exports = router;
+
+module.exports = app;
