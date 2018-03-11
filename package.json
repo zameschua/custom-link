@@ -9,7 +9,7 @@
     "server": "nodemon index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "heroku-postbuild": "yarn && cd client && yarn && yarn build",
-    "start": "yarn heroku-postbuild && cd client && yarn start && cd .. & nodemon index.js"
+    "start": "yarn heroku-postbuild && node index.js"
   },
   "author": "zameschua",
   "license": "ISC",
