@@ -17,9 +17,11 @@ router.use(function(req, res, next) {
 });
 
 // App
+router.use(express.static(path.join(__dirname, '/../../client/build')));
 router.route('/')
   .get((req, res) => {
     res.sendFile(path.join(__dirname + '/../../client/build/index.html'));
+
   });
 
 // Creating a new link
