@@ -5,6 +5,7 @@ const path = require("path");
 // Connect to Postgres
 const { Client } = require('pg');
 const postgres = new Client({
+  database : 'custom_link',
   connectionString: process.env.DATABASE_URL,
   ssl: true,
 });
